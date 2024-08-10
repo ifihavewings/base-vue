@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>D3.js Force Layout with Clustering</title>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <style>
+    /* Add any custom styling for the visualization here */
+    canvas {
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+
+<body>
+
+  <canvas id="chart" width="1000" height="1000"></canvas>
+
+  <script>
+    // Generate 5000 nodes and divide them into 5 clusters
+    const numNodes = 5000;
+    const numClusters = 5;
+
+    const data = {
+      nodes: d3.range(numNodes).map((d, i) => ({
+        id: i,
+        group: Math.floor(i / (numNodes / numClusters)),
+      })),
+      links: generateRandomEdges(numNodes, 5000),
+    };
+
+    function generateRandomEdges(numNodes, numEdges) {
+      const edges = [];
+      const nodes = d3.range(numNodes);
+
+      for (let i = 0; i < numEdges; i++) {
+        const source = nodes[Math.floor(Math.random() * numNodes)];
+        let target = nodes[Math.floor(Math.random() * numNodes)];
+
+        // Ensure source and target are different
+        while (target === source) {
+          target = nodes[Math.floor(Math.random() * numNodes)];
+        }
+
+        edges.push({
+          source,
+          target
+        });
+      }
+
+      return edges;
+    }
+
+    // Create the force simulation
+    const simulation = d3.forceSimulation(data.nodes)
+      .force("link", d3.forceLink(data.links).id(d => d.id))
+      .force("charge", d3.forceManyBody().strength(-200))
+      .force("center", d3.forceCenter(500, 500)); // Adjust the center as needed
+
+    // Create Canvas
+    const canvas = document.getElementById("chart");
+    const context = canvas.getContext("2d");
+
+    // Zoom behavior
+    const zoom = d3.zoom()
+      .scaleExtent([0.1, 10])
+      .on("zoom", zoomed);
+
+    d3.select(canvas).call(zoom);
+
+    // Add links
+    function drawLinks() {
+      context.beginPath();
+      context.strokeStyle = "#999";
+      context.lineWidth = 1;
+      data.links.forEach(link => {
+        context.moveTo(link.source.x, link.source.y);
+        context.lineTo(link.target.x, link.target.y);
+      });
+      context.stroke();
+    }
+
+    // Add nodes
+    function drawNodes() {
+      context.beginPath();
+      data.nodes.forEach(node => {
+        context.moveTo(node.x + 5, node.y);
+        context.arc(node.x, node.y, 5, 0, 2 * Math.PI);
+      });
+      context.fillStyle = d => getColor(d.group);
+      context.fill();
+      context.stroke();
+    }
+
+    // Helper function to get node color based on group
+    function getColor(group) {
+      const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+      return colorScale(group);
+    }
+
+    // Tick function to update positions on each simulation step
+    simulation.on("tick", () => {
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      drawLinks();
+      drawNodes();
+    });
+
+    // Zoom function
+    function zoomed() {
+      context.setTransform(d3.event.transform);
+      simulation.alpha(0.3).restart(); // Restart simulation on zoom
+    }
+  </script>
+
+</body>
+
+</html>

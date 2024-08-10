@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Knowledge Graph with D3.js and Canvas</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        const canvas = document.getElementById("canvas");
+        const context = canvas.getContext("2d");
+
+        const width = canvas.width = window.innerWidth;
+        const height = canvas.height = window.innerHeight;
+
+        const simulation = d3.forceSimulation()
+            .force("center", d3.forceCenter(width / 2, height / 2))
+            .force("charge", d3.forceManyBody().strength(-100))
+            .force("link", d3.forceLink().id(d => d.id).distance(100))
+            .force("collide", d3.forceCollide().radius(20))
+            .alphaDecay(0)
+            .on("tick", ticked);
+
+        const nodes = [
+            { id: "A" },
+            { id: "B" },
+            { id: "C" },
+            { id: "D" }
+        ];
+
+        const links = [
+            { source: "A", target: "B" },
+            { source: "B", target: "C" },
+            { source: "C", target: "D" },
+            { source: "D", target: "A" }
+        ];
+
+        simulation.nodes(nodes);
+        simulation.force("link").links(links);
+
+        canvas.addEventListener("click", handleClick);
+        canvas.addEventListener("mousemove", handleMousemove);
+        canvas.addEventListener("mousedown", handleMousedown);
+        canvas.addEventListener("mouseup", handleMouseup);
+
+        let selectedNode = null;
+        let dragging = false;
+
+        function ticked() {
+            context.clearRect(0, 0, width, height);
+
+            context.beginPath();
+            links.forEach(drawLink);
+            context.strokeStyle = "#999";
+            context.stroke();
+
+            nodes.forEach(drawNode);
+        }
+
+        function drawNode(node) {
+            context.beginPath();
+            context.arc(node.x, node.y, 10, 0, 2 * Math.PI);
+            context.fillStyle = "#66c2a5";
+            context.fill();
+        }
+
+        function drawLink(link) {
+            const dx = link.target.x - link.source.x;
+            const dy = link.target.y - link.source.y;
+            const angle = Math.atan2(dy, dx);
+
+            // 绘制直线部分
+            context.moveTo(link.source.x, link.source.y);
+            context.lineTo(link.target.x, link.target.y);
+
+            // 绘制箭头
+            const arrowSize = 10;
+            context.moveTo(link.target.x - arrowSize * Math.cos(angle - Math.PI / 6), link.target.y - arrowSize * Math.sin(angle - Math.PI / 6));
+            context.lineTo(link.target.x, link.target.y);
+            context.lineTo(link.target.x - arrowSize * Math.cos(angle + Math.PI / 6), link.target.y - arrowSize * Math.sin(angle + Math.PI / 6));
+        }
+
+        function handleClick(event) {
+            const mouseX = event.clientX;
+            const mouseY = event.clientY;
+
+            nodes.forEach(node => {
+                const dx = mouseX - node.x;
+                const dy = mouseY - node.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance < 10) {
+                    console.log("Clicked node:", node.id);
+                }
+            });
+        }
+
+        function handleMousemove(event) {
+            const mouseX = event.clientX;
+            const mouseY = event.clientY;
+
+            nodes.forEach(node => {
+                const dx = mouseX - node.x;
+                const dy = mouseY - node.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance < 10) {
+                    console.log("Hovered node:", node.id);
+                }
+            });
+
+            if (selectedNode && dragging) {
+                const mouseX = event.clientX;
+                const mouseY = event.clientY;
+                selectedNode.fx = mouseX;
+                selectedNode.fy = mouseY;
+                simulation.alpha(1).restart();
+            }
+        }
+
+        function handleMousedown(event) {
+            const mouseX = event.clientX;
+            const mouseY = event.clientY;
+
+            nodes.forEach(node => {
+                const dx = mouseX - node.x;
+                const dy = mouseY - node.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance < 10) {
+                    selectedNode = node;
+                    dragging = true;
+                }
+            });
+        }
+
+        function handleMouseup(event) {
+            if (selectedNode) {
+                selectedNode.fx = null;
+                selectedNode.fy = null;
+            }
+            selectedNode = null;
+            dragging = false;
+        }
+
+        function zoomed(event) {
+            context.save();
+            context.clearRect(0, 0, width, height);
+            context.translate(event.transform.x, event.transform.y);
+            context.scale(event.transform.k, event.transform.k);
+            ticked();
+            context.restore();
+        }
+
+        const zoom = d3.zoom()
+            .scaleExtent([0.1, 10])
+            .on("zoom", zoomed);
+
+        d3.select(canvas).call(zoom);
+
+    </script>
+</body>
+</html>

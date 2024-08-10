@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var a = [
+            {
+                a:"222",
+                b:"ccc",
+                children:[
+                    {
+                        a:"222",
+                        b:"ccc",                        
+                    },
+                    {
+                        a:"222",
+                        b:"ccc",  
+                        children:[
+                            {
+                                a:"222",
+                                b:"ccc",                        
+                            },
+                            {
+                                a:"222",
+                                b:"ccc",                         
+                            }
+                        ]                                               
+                    }
+                ]
+            },
+            {
+                a:"222",
+                b:"ccc",
+                children:[
+                    {
+                        a:"222",
+                        b:"ccc",                        
+                    },
+                    {
+                        a:"222",
+                        b:"ccc",  
+                        children:[
+                            {
+                                a:"222",
+                                b:"ccc",                        
+                            },
+                            {
+                                a:"222",
+                                b:"ccc",                         
+                            }
+                        ]                                               
+                    }
+                ]
+            },
+        ]
+        function ddd(arr) {
+            arr.forEach(element => {
+                if(element.children && element.children.length > 0) {
+                    eee(element)
+                }
+            });
+        }
+        function eee(obj) {
+            obj.aaa = obj.children
+            delete obj.children
+            ddd(obj.aaa)
+        }
+        ddd(a)
+        console.log(a)
+    </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+@font-face {
+  font-family: "iconfont"; /* Project id 4403228 */
+  src: url('iconfont.woff2?t=1704698838868') format('woff2'),
+       url('iconfont.woff?t=1704698838868') format('woff'),
+       url('iconfont.ttf?t=1704698838868') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-icon_baidulogo:before {
+  content: "\e65e";
+}
+
+.icon-chrome:before {
+  content: "\ea09";
+}
+
+.icon-morentouxiang:before {
+  content: "\e663";
+}
+
+.icon-a-morentouxiang2x:before {
+  content: "\e601";
+}
+

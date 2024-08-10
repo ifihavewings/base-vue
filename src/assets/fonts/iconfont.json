@@ -1,0 +1,37 @@
+{
+  "id": "4403228",
+  "name": "base-vue",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "5098251",
+      "name": "icon_百度logo",
+      "font_class": "icon_baidulogo",
+      "unicode": "e65e",
+      "unicode_decimal": 58974
+    },
+    {
+      "icon_id": "11983530",
+      "name": "chrome",
+      "font_class": "chrome",
+      "unicode": "ea09",
+      "unicode_decimal": 59913
+    },
+    {
+      "icon_id": "26847630",
+      "name": "默认头像",
+      "font_class": "morentouxiang",
+      "unicode": "e663",
+      "unicode_decimal": 58979
+    },
+    {
+      "icon_id": "30808030",
+      "name": "默认头像@2x",
+      "font_class": "a-morentouxiang2x",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    }
+  ]
+}

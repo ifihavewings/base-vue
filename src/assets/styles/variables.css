@@ -1,0 +1,15 @@
+:root {
+    --primary-color: #780000;
+    --primary-color1: #c1121f;
+    --primary-color2: #fdf0d5;
+    --primary-color3: #003049;
+    --primary-color4: #669bbc;
+    --font-color-main: #333;
+    --font-color-sub: #666;
+    --bg1: #edede9;
+    --bg2: #f5ebe0;
+    --bg2rgba: rgba(245, 235, 224, 0.5);
+    --bg3: #e3d5ca;
+    --bg4: #d6ccc2;
+    --bg5: #d5bdaf;
+}

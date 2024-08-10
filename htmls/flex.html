@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    .container {
+      display: flex;
+      height: 200px;
+      border: 1px solid #ccc;
+    }
+
+    .item {
+      width: 50px;
+      height: 50px;
+      background-color: #3498db;
+      color: #fff;
+      margin: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Example of align-self */
+    .item.align-self-example {
+      align-self: flex-end;
+    }
+
+    /* Example of justify-self */
+    .item.justify-self-example {
+      justify-self: center;
+    }
+  </style>
+  <title>Flexbox Demo</title>
+</head>
+<body>
+  <h2>Flexbox Demo</h2>
+
+  <div class="container">
+    <div class="item">1</div>
+    <div class="item align-self-example">2 (align-self: flex-end)</div>
+    <div class="item justify-self-example">3 (justify-self: center)</div>
+    <div class="item">4</div>
+  </div>
+</body>
+</html>

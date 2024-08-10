@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get src Attribute Value of div Elements</title>
+</head>
+<body>
+    <div id="div1" src="content1.html">Div 1</div>
+    <div>Div 2</div>
+    <div id="div3" src="content3.html">Div 3</div>
+    <script>
+        // 获取所有带有 src 属性的 div 元素
+        const divsWithSrc = document.querySelectorAll('div[src]');
+        
+        // 遍历带有 src 属性的 div 元素并获取其 src 属性值
+        divsWithSrc.forEach(div => {
+            const srcValue = div.getAttribute('src');
+            console.log('src attribute value:', srcValue);
+        });
+    </script>
+</body>
+</html>

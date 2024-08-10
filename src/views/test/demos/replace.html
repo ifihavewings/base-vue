@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Highlight Text in HTML with JavaScript</title>
+<style>
+  .highlight {
+    background-color: yellow;
+  }
+</style>
+</head>
+<body>
+
+<!-- 示例 HTML -->
+<div class="dfs" style="width:500px"> i know the class and the style, don't change the style and class</div>
+
+<!-- 输入关键字的输入框 -->
+<input type="text" id="keywordInput" placeholder="Enter keyword">
+
+<script>
+// 根据输入的关键字进行匹配与替换
+function highlightKeyword() {
+    // 获取输入框中的关键字
+    var keyword = document.getElementById('keywordInput').value;
+    // 对关键字进行适当的转义
+    var escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    // 创建一个包含关键字的正则表达式
+    var regex = new RegExp('(' + escapedKeyword + ')', 'gi');
+    // 获取页面中的目标元素
+    var element = document.querySelector('.dfs');
+    // 获取元素内的文本内容
+    var textContent = element.textContent;
+    // 使用正则表达式在文本内容中搜索关键字并进行替换
+    var highlightedText = textContent.replace(regex, '<span class="highlight">$1</span>');
+    // 将替换后的文本内容重新赋值给元素
+    element.innerHTML = highlightedText;
+}
+
+// 当输入框的值发生变化时触发替换操作
+document.getElementById('keywordInput').addEventListener('input', highlightKeyword);
+</script>
+
+</body>
+</html>

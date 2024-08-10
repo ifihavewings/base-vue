@@ -1,0 +1,31 @@
+    <pre>
+        <code class="language-javascript">
+            import { ref, reactive, toRef, toRefs } from 'vue'
+            const data = reactive({
+            name: '张三',
+            age: 18,
+            salary: 2000,
+            skills: ['JavaScript', 'HTML', 'CSS']
+            })
+
+            const { name, age, skills } = toRefs(data)
+            const salary = toRef(data, 'salary')
+            console.log(salary)
+
+            const changeName = () => {
+            name.value = '李四'
+            console.log(data)
+            console.log(name)
+            }
+            const changeAge = () => {
+            data.age = 200
+            console.log(data)
+            console.log(age)
+            }
+            const changeSalary = () => {
+                salary.value = 3000
+                console.log(data)
+                console.log(salary) 
+            }
+        </code>
+    </pre>

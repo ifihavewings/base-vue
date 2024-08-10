@@ -11,17 +11,15 @@ const router = createRouter({
     },
     ...routes,
     {
-      path: '/:catchAll(.*)',
-      redirect: '/'
-    }
-  
-  ]
+      path: '/:pathMatch(.*)*',
+      name: 'not-found',
+      component: () => import('@/views/error/404.vue'),
+      // below codes are not working, it will lead to infinite loop
+      // redirect: '/404',
+
+  },
+]
 })
-router.beforeEach((to, from, next) => {
-  console.log('====================================');
-  console.log(to,from, next);
-  console.log('====================================');
-  next()
-})
+router.beforeEach((to, from, next) => { next() })
 
 export default router

@@ -52,4 +52,14 @@ export const formUploadFiles = (data:FormData) => {
 
 
 }
+export const showStream = () => {
+
+    return request({
+        url: `nest/downloads/donwload`,
+        method: "post",
+        responseType: "blob", // 修改此处为正确的响应类型
+    })
+
+
+}
 

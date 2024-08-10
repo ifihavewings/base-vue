@@ -31,8 +31,6 @@ instance.interceptors.request.use(
 // 响应拦截器
 instance.interceptors.response.use(
     (response) => {
-        console.log('response')
-        console.log(response)
         try {
             const authorization = response?.headers?.authorization;
             if (authorization) {
@@ -125,11 +123,6 @@ instance.interceptors.response.use(
 // axios#patch(url[, data[, config]])
 // axios#getUri([config])
 
-interface ICustomized {
-    baseURL?: string;// 修改 baseURL
-    isUniq?: boolean;
-    [key: string]: any
-}
 export const request = instance.request
 export const post = instance.post
 export const get = instance.get

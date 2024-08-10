@@ -1,4 +1,6 @@
+import documentation from "./documentation"
 export default [
+    ...documentation,
     {
         path: '/axios-test',
         name: 'axiosTest',
@@ -195,17 +197,10 @@ export default [
         component: () => import('@/views/test/functional/FormUpload.vue'),
     },
     {
-        path: '/stream',
-        name: 'Stream',
-        component: () => import('@/views/test/functional/Stream.vue'),
+        path: '/showStream',
+        name: 'ShowStream`',
+        component: () => import('@/views/test/functional/ShowStream.vue'),
     },
 
-    {
-        path: '/:pathMatch(.*)*',
-        name: 'not-found',
-        // component: () => import('@/views/error/404.vue'),
-        redirect: '/404',
-
-    },
 
 ]

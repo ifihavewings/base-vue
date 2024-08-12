@@ -17,6 +17,11 @@ export default [
                 name: 'Directives',
                 component: () => import('@/views/documentations/Directives.vue')
             },
+            {
+                path: 'eventHanding',
+                name: 'EventHanding',
+                component: () => import('@/views/documentations/EventHanding.vue')
+            },
         ]
     },
 

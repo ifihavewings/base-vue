@@ -4,6 +4,7 @@
     <div>
         <router-link class="link" to="/documentations/templateSyntax">TemplateSyntax</router-link>
         <router-link class="link" to="/documentations/directives">Directives</router-link>
+        <router-link class="link" to="/documentations/eventHanding">EventHanding</router-link>
     </div>
     <router-view></router-view>
 </template>

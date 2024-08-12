@@ -19,6 +19,7 @@ declare module 'vue' {
     FadeTransition: typeof import('./src/components/transitions/FadeTransition.vue')['default']
     Layout: typeof import('./src/components/layout/index.vue')['default']
     Leading: typeof import('./src/components/Leading.vue')['default']
+    Page: typeof import('./src/components/page/Page.vue')['default']
     RecursiveMenu: typeof import('./src/components/menus/RecursiveMenu.vue')['default']
     RoundContainer: typeof import('./src/components/RoundContainer.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

@@ -1,26 +1,3 @@
-<template>
-  <el-form
-    ref="ruleFormRef"
-    :model="ruleForm"
-    :rules="rules"
-    label-width="120px"
-    class="demo-ruleForm"
-    :size="formSize"
-    status-icon
-  >
-    <el-form-item label="用户名" prop="username">
-      <el-input v-model="ruleForm.username" />
-    </el-form-item>
-    <el-form-item label="密码" prop="password">
-      <el-input type="password" v-model="ruleForm.password" />
-    </el-form-item>
-  </el-form>
-  <div class="button-wrapper">
-    <el-button @click="login" type="primary">登录</el-button>
-    <el-button @click="toggleAction" link>去注册</el-button>
-  </div>
-</template>
-
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
 import { storeToRefs } from 'pinia'
@@ -121,6 +98,30 @@ const login = async () => {
   }
 }
 </script>
+<template>
+  <el-form
+    ref="ruleFormRef"
+    :model="ruleForm"
+    :rules="rules"
+    label-width="120px"
+    class="demo-ruleForm"
+    :size="formSize"
+    status-icon
+  >
+    <el-form-item label="用户名" prop="username">
+      <el-input v-model="ruleForm.username" />
+    </el-form-item>
+    <el-form-item label="密码" prop="password">
+      <el-input type="password" v-model="ruleForm.password" />
+    </el-form-item>
+  </el-form>
+  <div class="button-wrapper">
+    <el-button @click="login" type="primary">登录1</el-button>
+    <el-button @click="toggleAction" link>去注册</el-button>
+  </div>
+</template>
+
+
 
 <style scoped lang="scss">
 .button-wrapper {

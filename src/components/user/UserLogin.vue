@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
+import { SubmitController } from '@/utils/SubmitController'
 import { storeToRefs } from 'pinia'
 import type { FormInstance, FormRules } from 'element-plus'
 import { login as loginApi } from '@/apis/user'
-import isEmail from 'validator/lib/isEmail';
+import isEmail from 'validator/lib/isEmail'
 // import { sameString } from '@/validaters/user'
 import { useUserStore } from '@/stores/user'
 const userStore = useUserStore()
@@ -11,7 +12,7 @@ const userStore = useUserStore()
 const { fetchUserInfo } = userStore
 const { userInfo, isLogined } = storeToRefs(userStore)
 
-import { ElMessage } from 'element-plus'
+import { ElMessage, transferCheckedChangeFn } from 'element-plus'
 interface RuleForm {
   username: string
   password: string
@@ -68,60 +69,69 @@ const rules = reactive<FormRules<RuleForm>>({
 })
 
 const checkForm = async (formEl: FormInstance | undefined) => {
-  if (!formEl) return;
-  
+  if (!formEl) return
+
   return formEl.validate((valid, fields) => {
     if (!valid) {
-      const keys: string[] = fields ? Object.keys(fields) : [];
+      const keys: string[] = fields ? Object.keys(fields) : []
       ElMessage({
         type: 'error',
-        message: fields?.[keys[0]][0].message ?? '表单验证失败',
-      });
-    }
-  });
-};
-
-
-const login = async () => {
-  try {
-    let checkRes = await checkForm(ruleFormRef.value)
-    if (checkRes) {
-      const res = await loginApi(ruleForm, {
-        isProcess: false
+        message: fields?.[keys[0]][0].message ?? '表单验证失败'
       })
-      const token = res.headers.authorization
-      localStorage.setItem('token', token)
-      fetchUserInfo()
     }
-  } catch (err) {
-    console.log(err)
-  }
+  })
+}
+
+// try {
+//   let checkRes = await checkForm(ruleFormRef.value)
+//   if (checkRes) {
+//     const res = await loginApi(ruleForm, {
+//       isProcess: false
+//     })
+//     const token = res.headers.authorization
+//     localStorage.setItem('token', token)
+//     fetchUserInfo()
+//   }
+// } catch (err) {
+//   console.log(err)
+// }
+
+const login = () => {
+  const sc = new SubmitController({
+    loadingOption: {
+      target: ruleFormRef.value
+    },
+    validator: {func: checkForm, args: [ruleFormRef.value]},
+    callback() {
+      alert(2)
+    }
+  })
 }
 </script>
 <template>
-  <el-form
-    ref="ruleFormRef"
-    :model="ruleForm"
-    :rules="rules"
-    label-width="120px"
-    class="demo-ruleForm"
-    :size="formSize"
-    status-icon
-  >
-    <el-form-item label="用户名" prop="username">
-      <el-input v-model="ruleForm.username" />
-    </el-form-item>
-    <el-form-item label="密码" prop="password">
-      <el-input type="password" v-model="ruleForm.password" />
-    </el-form-item>
-  </el-form>
-  <div class="button-wrapper">
-    <el-button @click="login" type="primary">登录1</el-button>
-    <el-button @click="toggleAction" link>去注册</el-button>
+  <div>
+    <el-form
+      ref="ruleFormRef"
+      :model="ruleForm"
+      :rules="rules"
+      label-width="120px"
+      class="demo-ruleForm"
+      :size="formSize"
+      status-icon
+    >
+      <el-form-item label="用户名" prop="username">
+        <el-input v-model="ruleForm.username" />
+      </el-form-item>
+      <el-form-item label="密码" prop="password">
+        <el-input type="password" v-model="ruleForm.password" />
+      </el-form-item>
+    </el-form>
+    <div class="button-wrapper">
+      <el-button @click="login" type="primary">登录1</el-button>
+      <el-button @click="toggleAction" link>去注册</el-button>
+    </div>
   </div>
 </template>
-
-
 
 <style scoped lang="scss">
 .button-wrapper {

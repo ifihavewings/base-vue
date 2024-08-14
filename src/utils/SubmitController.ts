@@ -11,7 +11,7 @@ export class SubmitController {
 
     public isSubmiting = ref(false)
     private options: Record<any, any> = {}
-    private loadingService:any = null
+    private loadingService: any = null
 
 
 
@@ -21,16 +21,14 @@ export class SubmitController {
     async initialize(options: Record<any, any>) {
         this.options = options
         try {
-            const validateRes = await this.validate()
-            // verify whether the form passes validation
-            if(validateRes) {
-                alert('pass')
-            }else {
-                alert('fail')
+            const isPassed = await this.validate()
+            if (isPassed) {
+                this.loadingService = ElLoading.service(this.options.loadingOption)
+                this.submit()
+            } else {
+                console.warn('SubmitController.prototype.initialize verify failed')
             }
-            this.options.loadingOption
-            this.loadingService = ElLoading.service(this.options.loadingOption)
-            
+
         } catch (error) {
             console.log(error)
         } finally {
@@ -39,13 +37,11 @@ export class SubmitController {
     }
 
     public validate() {
-        const {validator } = this.options
-        if(validator) {
+        const { validator } = this.options
+        if (validator) {
             switch (true) {
-                case typeof validator === 'function':{
-
-                    // pass
-                    break;
+                case typeof validator === 'function': {
+                    return validator()
                 }
                 case Array.isArray(validator): {
 
@@ -53,13 +49,21 @@ export class SubmitController {
                     break;
                 }
                 case typeof validator === 'object' && validator !== null: {
-                    const {func, args} = validator
+                    const { func, args } = validator
                     return func(...args)
                 }
                 default:
                     break;
             }
-       
+
         }
+    }
+
+    private submit() {
+        this.isSubmiting.value = true
+        this.options.submit()
+    }
+    private callback() {
+
     }
 }

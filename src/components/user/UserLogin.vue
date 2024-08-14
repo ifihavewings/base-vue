@@ -96,11 +96,20 @@ const checkForm = async (formEl: FormInstance | undefined) => {
 //   console.log(err)
 // }
 
-const login = () => {
+const props = defineProps({
+  pId: {
+    type: String,
+    default: ''
+  }
+})
+const login = async () => {
   const sc = new SubmitController({
     loadingOption: {
-      target: ruleFormRef.value
-    },
+    target: props.pId,  // 指定目标容器
+    text: '加载中...', // 显示的文本
+    spinner: 'el-icon-loading', // 自定义加载图标
+    background: 'rgba(255, 255, 255, 0.7)' // 背景颜色
+},
     validator: {func: checkForm, args: [ruleFormRef.value]},
     callback() {
       alert(2)
@@ -109,7 +118,7 @@ const login = () => {
 }
 </script>
 <template>
-  <div>
+  <div id="login">
     <el-form
       ref="ruleFormRef"
       :model="ruleForm"

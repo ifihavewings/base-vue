@@ -37,18 +37,6 @@ const isShowRegister = computed(() => {
   return !isLogined.value && !isShowLoginPopover.value
 })
 
-// onMounted(() => {
-//   var obj = new WxLogin({
-//     self_redirect: true,
-//     id: 'login_container',
-//     appid: '434',
-//     scope: '4343',
-//     redirect_uri: encodeURI('http://1.15.26.177/home')
-//     // state: '',
-//     // style: '',
-//     // href: ''
-//   })
-// })
 </script>
 
 <template>
@@ -61,8 +49,8 @@ const isShowRegister = computed(() => {
     />
     <span v-else @click="toggle" class="head-icon iconfont icon-a-morentouxiang2x"></span>
     <FadeTransition>
-      <div v-if="isShowDetail" class="user-box">
-        <UserLogin @toggleAction="setIsShowLoginPopover" v-if="isShowLogin" />
+      <div v-if="isShowDetail"  id="userIcon" class="user-box">
+        <UserLogin pId="#userIcon" @toggleAction="setIsShowLoginPopover" v-if="isShowLogin" />
         <UserRegister @toggleAction="setIsShowLoginPopover" v-if="isShowRegister" />
         <UserInfo :userInfo="userInfo" v-if="isLogined" />
         <userLogout v-if="isLogined" />

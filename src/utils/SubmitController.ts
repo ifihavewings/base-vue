@@ -1,11 +1,6 @@
 import { ElLoading } from 'element-plus'
 import { ref } from 'vue'
 console.log(ElLoading)
-const loadingOption = {
-    lock: false,
-    target: document.body
-
-}
 /**
  * 提交控制器
  * @description 提交控制器
@@ -15,9 +10,7 @@ const loadingOption = {
 export class SubmitController {
 
     public isSubmiting = ref(false)
-    private options: Record<any, any> = {
-        loadingOption
-    }
+    private options: Record<any, any> = {}
     private loadingService:any = null
 
 
@@ -29,7 +22,15 @@ export class SubmitController {
         this.options = options
         try {
             const validateRes = await this.validate()
-            this.loadingService = ElLoading.service(loadingOption)
+            // verify whether the form passes validation
+            if(validateRes) {
+                alert('pass')
+            }else {
+                alert('fail')
+            }
+            this.options.loadingOption
+            this.loadingService = ElLoading.service(this.options.loadingOption)
+            
         } catch (error) {
             console.log(error)
         } finally {
@@ -40,13 +41,21 @@ export class SubmitController {
     public validate() {
         const {validator } = this.options
         if(validator) {
+            switch (true) {
+                case typeof validator === 'function':{
 
-            switch (typeof validator) {
-                case 'object':
-                    const {func, args} = validator
-                    func(args)
+                    // pass
                     break;
-            
+                }
+                case Array.isArray(validator): {
+
+                    // pass
+                    break;
+                }
+                case typeof validator === 'object' && validator !== null: {
+                    const {func, args} = validator
+                    return func(...args)
+                }
                 default:
                     break;
             }

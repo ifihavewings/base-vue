@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
+import { reactive, ref, watch } from 'vue'
 import { SubmitController } from '@/utils/SubmitController'
 import { storeToRefs } from 'pinia'
 import type { FormInstance, FormRules } from 'element-plus'
@@ -90,10 +90,11 @@ const props = defineProps({
   }
 })
 
-const submit = async () => {
-  const res = await loginApi(ruleForm, {
+const submit = async () =>
+  loginApi(ruleForm, {
     isProcess: false
   })
+const sumbmitHandler = (res: any) => {
   const token = res.headers.authorization
   localStorage.setItem('token', token)
   fetchUserInfo()
@@ -101,22 +102,22 @@ const submit = async () => {
 const submitController = new SubmitController({
   loadingOption: {
     target: props.pId, // 指定目标容器
-    text: 'loading...', // 显示的文本
-    spinner: 'el-icon-loading', // 自定义加载图标
-    background: 'rgba(255, 255, 255, 0.3)' // 背景颜色
   },
   // A function passed as an argument should preferably not have any parameters.
   //  The SubmitController is designed to work with the validator property, whether it's a function, an object, or an array of functions and/or objects.
   // validator: { func: checkForm, args: [ruleFormRef.value] },
   validator: doCheckForm,
-  callback() {
-    alert(2)
-  },
+  callback: sumbmitHandler,
   submit
 })
 const login = () => {
   submitController.run()
 }
+
+watch(submitController.isSubmiting, (newValue) => {
+  console.log('newValue')
+  console.log(newValue)
+})
 </script>
 <template>
   <div id="login">
@@ -138,7 +139,9 @@ const login = () => {
       </el-form-item>
     </el-form>
     <div class="button-wrapper">
-      <el-button @click="login" type="primary">登录1</el-button>
+      <el-button :disabled="submitController.isSubmiting.value"  @click="login" type="primary"
+        >登录1</el-button
+      >
       <el-button @click="toggleAction" link>去注册</el-button>
     </div>
   </div>

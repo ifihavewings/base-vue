@@ -25,7 +25,7 @@
     </el-form-item>
   </el-form>
   <div class="button-wrapper">
-    <el-button @click="register" type="primary">注册</el-button>
+    <el-button :disabled="submitController.isSubmiting" @click="register" type="primary">注册</el-button>
     <el-button @click="toggleAction" link>去登录</el-button>
   </div>
 </template>

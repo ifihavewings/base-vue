@@ -22,6 +22,11 @@ export default [
                 name: 'EventHanding',
                 component: () => import('@/views/documentations/EventHanding.vue')
             },
+            {
+                path: 'reactivityFundamentals',
+                name: 'ReactivityFundamentals',
+                component: () => import('@/views/documentations/ReactivityFundamentals.vue')
+            },
         ]
     },
 

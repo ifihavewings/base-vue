@@ -19,3 +19,4 @@ export function handleCallback(callback: ICallback): any {
         return func(...args);
     }
 }
+

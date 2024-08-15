@@ -51,7 +51,7 @@ const isShowRegister = computed(() => {
     <FadeTransition>
       <div v-if="isShowDetail"  id="userIcon" class="user-box">
         <UserLogin pId="#userIcon" @toggleAction="setIsShowLoginPopover" v-if="isShowLogin" />
-        <UserRegister @toggleAction="setIsShowLoginPopover" v-if="isShowRegister" />
+        <UserRegister pId="#userIcon" @toggleAction="setIsShowLoginPopover" v-if="isShowRegister" />
         <UserInfo :userInfo="userInfo" v-if="isLogined" />
         <userLogout v-if="isLogined" />
       </div>

@@ -81,7 +81,7 @@ const checkForm = async (formEl: FormInstance | undefined) => {
     }
   })
 }
-const doCheckForm = () =>checkForm(ruleFormRef.value)
+const doCheckForm = () => checkForm(ruleFormRef.value)
 
 const props = defineProps({
   pId: {
@@ -98,28 +98,30 @@ const submit = async () => {
   localStorage.setItem('token', token)
   fetchUserInfo()
 }
-const login = async () => {
-  const sc = new SubmitController({
-    loadingOption: {
-      target: props.pId, // 指定目标容器
-      text: 'loading...', // 显示的文本
-      spinner: 'el-icon-loading', // 自定义加载图标
-      background: 'rgba(255, 255, 255, 0.7)' // 背景颜色
-    },
-    // A function passed as an argument should preferably not have any parameters.
+const submitController = new SubmitController({
+  loadingOption: {
+    target: props.pId, // 指定目标容器
+    text: 'loading...', // 显示的文本
+    spinner: 'el-icon-loading', // 自定义加载图标
+    background: 'rgba(255, 255, 255, 0.3)' // 背景颜色
+  },
+  // A function passed as an argument should preferably not have any parameters.
   //  The SubmitController is designed to work with the validator property, whether it's a function, an object, or an array of functions and/or objects.
-    // validator: { func: checkForm, args: [ruleFormRef.value] },
-    validator: doCheckForm,
-    callback() {
-      alert(2)
-    },
-    submit
-  })
+  // validator: { func: checkForm, args: [ruleFormRef.value] },
+  validator: doCheckForm,
+  callback() {
+    alert(2)
+  },
+  submit
+})
+const login = () => {
+  submitController.run()
 }
 </script>
 <template>
   <div id="login">
     <el-form
+      :disabled="submitController.isSubmiting"
       ref="ruleFormRef"
       :model="ruleForm"
       :rules="rules"

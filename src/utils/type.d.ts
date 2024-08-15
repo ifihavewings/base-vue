@@ -10,3 +10,4 @@ export interface IObjectCallback {
 export interface IArrayCallback extends Array<IFunctionCallback | IObjectCallback> {}
 
 export type ICallback = IFunctionCallback | IArrayCallback | IObjectCallback
+

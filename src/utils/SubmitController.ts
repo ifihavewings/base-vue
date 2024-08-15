@@ -1,6 +1,6 @@
 import { ElLoading } from 'element-plus'
 import { ref } from 'vue'
-console.log(ElLoading)
+import { handleCallback } from './function'
 /**
  * 提交控制器
  * @description 提交控制器
@@ -18,45 +18,41 @@ export class SubmitController {
     constructor(options: Record<any, any>) {
         this.initialize(options)
     }
-    async initialize(options: Record<any, any>) {
+    /**
+     * Initializes the SubmitController with the given options.
+     *
+     * @param {Record<any, any>} options - The options to initialize the SubmitController with.
+     * @return {void}
+     */
+    initialize(options: Record<any, any>) {
         this.options = options
+
+    }
+    public async run() {
         try {
             const isPassed = await this.validate()
-            if (isPassed) {
+            // ElementPlus 文档不明确， 有时候返回 true 有时候返回 undefined
+            if (isPassed || undefined === isPassed) {
                 this.loadingService = ElLoading.service(this.options.loadingOption)
                 this.submit()
             } else {
                 console.warn('SubmitController.prototype.initialize verify failed')
             }
-
         } catch (error) {
             console.log(error)
         } finally {
-            this.loadingService.close()
+            this.isSubmiting.value = false
+            this.loadingService && this.loadingService.close()
         }
     }
 
-    public validate() {
+    private validate() {
         const { validator } = this.options
         if (validator) {
-            switch (true) {
-                case typeof validator === 'function': {
-                    return validator()
-                }
-                case Array.isArray(validator): {
-
-                    // pass
-                    break;
-                }
-                case typeof validator === 'object' && validator !== null: {
-                    const { func, args } = validator
-                    return func(...args)
-                }
-                default:
-                    break;
-            }
-
+            return handleCallback(validator)
         }
+        // since no validator is set, just pass the check
+        return Promise.resolve();
     }
 
     private submit() {

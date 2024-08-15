@@ -33,11 +33,12 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
-import { register as registerApi, login as loginApi, getUserInfo } from '@/apis/user'
+import { register as registerApi } from '@/apis/user'
 // import { sameString } from '@/validaters/user'
-import validator from 'validator'
+import * as validator from 'validator'
 import AvatarPicker from '@/components/user/AvatarPicker.vue'
 import { ElMessage } from 'element-plus'
+import { SubmitController } from '@/utils/SubmitController'
 interface RuleForm {
   username: string
   password: string
@@ -58,8 +59,6 @@ const emit = defineEmits(['toggleAction'])
 const toggleAction = () => {
   emit('toggleAction', false)
 }
-
-
 
 const rules = reactive<FormRules<RuleForm>>({
   username: [
@@ -100,44 +99,53 @@ const resetForm = (formEl: FormInstance | undefined) => {
   formEl.resetFields()
 }
 
-
 const checkForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
-  return await formEl.validate((valid, fields) => {
-      if (!valid) {
-        const keys = Object.keys(fields ?? {})
-        ElMessage({
-          type: 'error',
-          message: fields?.[keys[0]][0].message
-        })
-      }
-  })
-}
-
-
-const login = async () => {
-  try {
-    let checkRes = await checkForm(ruleFormRef.value)
-    const res = await loginApi(ruleForm)
-    const userInfo = await getUserInfo({})
-  } catch (err) {
-    console.log(err)
-  }
-}
-const register = async () => {
-  try {
-    let checkRes = await checkForm(ruleFormRef.value)
-    if (ruleForm.password !== ruleForm.passwordRepeat) {
-      return ElMessage({
+  return formEl.validate((valid, fields) => {
+    if (!valid) {
+      const keys = Object.keys(fields ?? {})
+      ElMessage({
         type: 'error',
-        message: '两次密码不一致'
+        message: fields?.[keys[0]][0].message
       })
     }
-    const res = await registerApi(ruleForm)
-  } catch (error) {
-    console.log('error')
-    console.log(error)
+  })
+}
+const doCheckForm = () => checkForm(ruleFormRef.value)
+
+const submit = async () => {
+  if (ruleForm.password !== ruleForm.passwordRepeat) {
+    return ElMessage({
+      type: 'error',
+      message: '两次密码不一致'
+    })
   }
+  await registerApi(ruleForm)
+}
+const props = defineProps({
+  pId: {
+    type: String,
+    default: ''
+  }
+})
+const submitController = new SubmitController({
+  loadingOption: {
+    target: props.pId, // 指定目标容器
+    text: 'loading...', // 显示的文本
+    spinner: 'el-icon-loading', // 自定义加载图标
+    background: 'rgba(255, 255, 255, 0.3)' // 背景颜色
+  },
+  // A function passed as an argument should preferably not have any parameters.
+  //  The SubmitController is designed to work with the validator property, whether it's a function, an object, or an array of functions and/or objects.
+  // validator: { func: checkForm, args: [ruleFormRef.value] },
+  validator: doCheckForm,
+  callback() {
+    alert(2)
+  },
+  submit
+})
+const register = async () => {
+  submitController.run()
 }
 </script>
 

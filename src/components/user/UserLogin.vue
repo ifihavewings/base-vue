@@ -5,10 +5,10 @@ import { storeToRefs } from 'pinia'
 import type { FormInstance, FormRules } from 'element-plus'
 import { login as loginApi } from '@/apis/user'
 import isEmail from 'validator/lib/isEmail'
+import CustomForm from "@/components/form/CustomForm.vue"
 // import { sameString } from '@/validaters/user'
 import { useUserStore } from '@/stores/user'
 const userStore = useUserStore()
-
 const { fetchUserInfo } = userStore
 const { userInfo, isLogined } = storeToRefs(userStore)
 
@@ -114,10 +114,6 @@ const login = () => {
   submitController.run()
 }
 
-watch(submitController.isSubmiting, (newValue) => {
-  console.log('newValue')
-  console.log(newValue)
-})
 </script>
 <template>
   <div id="login">
@@ -131,6 +127,9 @@ watch(submitController.isSubmiting, (newValue) => {
       :size="formSize"
       status-icon
     >
+    <CustomForm>  
+      
+    </CustomForm>
       <el-form-item label="用户名" prop="username">
         <el-input v-model="ruleForm.username" />
       </el-form-item>

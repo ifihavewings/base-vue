@@ -1,4 +1,5 @@
-import { ElLoading } from 'element-plus'
+import { ElLoading, ElMessage } from 'element-plus'
+import type { FormInstance, FormRules } from 'element-plus'
 import { ref } from 'vue'
 import { handleCallback } from './function'
 import { merge } from 'lodash'
@@ -76,5 +77,17 @@ export class SubmitController {
     private callback(res: any) {
         this.options.callback && this.options.callback(res)
         this.isSubmiting.value = false
+    }
+    private checkForm = async (formEl: FormInstance | undefined) => {
+        if (!formEl) return
+        return formEl.validate((valid, fields) => {
+            if (!valid) {
+                const keys = Object.keys(fields ?? {})
+                ElMessage({
+                    type: 'error',
+                    message: fields?.[keys[0]][0].message
+                })
+            }
+        })
     }
 }

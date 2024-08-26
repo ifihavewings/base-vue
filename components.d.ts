@@ -17,6 +17,7 @@ declare module 'vue' {
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
     ElInput: typeof import('element-plus/es')['ElInput']
     ElOption: typeof import('element-plus/es')['ElOption']
+    ElRadio: typeof import('element-plus/es')['ElRadio']
     ElSelect: typeof import('element-plus/es')['ElSelect']
     FadeTransition: typeof import('./src/components/transitions/FadeTransition.vue')['default']
     Layout: typeof import('./src/components/layout/index.vue')['default']

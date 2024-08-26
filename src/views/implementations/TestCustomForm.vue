@@ -1,12 +1,6 @@
 <template>
   <div class="form-wrapper">
     <CustomForm :formConfig="formConfig" ref="formRef"></CustomForm>
-    <div class="button-wrapper">
-      <el-button  type="primary"
-        >注册</el-button
-      >
-      <el-button link>去登录</el-button>
-    </div>
   </div>
 </template>
 
@@ -131,17 +125,32 @@ const formItems = ref([
     attrs: {
       type: 'password'
     },
-    label: '密码'
+    label: '重复密码'
   },
   {
     prop: 'email',
     type: 'input',
-    label: '密码'
+    label: '邮箱'
+  },
+  {
+    prop: 'gender',
+    type: 'radio',
+    label: '性别',
+    options: [
+      {
+        label: 'f',
+        value: 1
+      },
+      {
+        label: 'm',
+        value: 0
+      },
+  ]
   },
   {
     prop: 'hobby',
     type: 'checkbox-group',
-    label: '密码'
+    label: '兴趣爱好'
   },
   {
     prop: 'birthDate',

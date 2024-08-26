@@ -5,23 +5,32 @@
     :rules="innerFormConfig.rules"
     ref="formRef"
   >
-      <el-form-item
-        v-for="field in innerFormConfig.formItems"
-        :label="field.label"
-        :prop="field.prop"
-        :key="field.prop"
+    <el-form-item
+      v-for="field in innerFormConfig.formItems"
+      :label="field.label"
+      :prop="field.prop"
+      :key="field.prop"
+    >
+      <component
+        style="width: 100%; height: 32px"
+        :is="getComponentType(field.type)"
+        v-model="innerFormConfig.formData[field.prop]"
+        v-bind="field.attrs"
+        :placeholder="getPlaceholder(field)"
       >
-        <component
-          style="width: 100%;height: 32px;"
-          :is="getComponentType(field.type)"
-          v-model="innerFormConfig.formData[field.prop]"
-          v-bind="getComponentProps(field)"
-          placeholder="a"
-        />
-      </el-form-item>
+        <template v-if="field.options && field.type === 'radio'">
+          <el-radio value="Value 1">Option 1</el-radio>
+          <el-radio value="Value 2">Option 3</el-radio>
+        </template>
+      </component>
+    </el-form-item>
 
     <!-- 表单操作按钮 -->
-    <el-form-item>
+    <el-form-item v-if="innerFormConfig.footer">
+      <el-button type="primary" @click="handleSubmit">提交</el-button>
+      <el-button @click="innerFormConfig.resetForm">重置</el-button>
+    </el-form-item>
+    <el-form-item v-else>
       <el-button type="primary" @click="handleSubmit">提交</el-button>
       <el-button @click="innerFormConfig.resetForm">重置</el-button>
     </el-form-item>
@@ -29,20 +38,26 @@
 </template>
 
 <script setup lang="ts">
-import { ElInput, ElSelect, ElCheckboxGroup, ElRadioGroup, ElDatePicker, ElTimePicker, ElSwitch } from 'element-plus'
+import {
+  ElInput,
+  ElSelect,
+  ElCheckboxGroup,
+  ElRadioGroup,
+  ElDatePicker,
+  ElTimePicker,
+  ElSwitch
+} from 'element-plus'
 import { SubmitController } from '@/utils/SubmitController'
 import { cloneDeep } from 'lodash'
 import { ref, onMounted, watch } from 'vue'
 
 // 3.4 才有
-// const modelValue = defineModel({required: true})
 const props = defineProps({
-  formConfig:{
+  formConfig: {
     type: Object,
     required: true
-  },
+  }
 })
-
 
 const emit = defineEmits(['create', 'update:formConfig'])
 
@@ -59,7 +74,7 @@ watch(
   () => {
     emit('update:formConfig', innerFormConfig.value)
   },
-  { deep: true }
+  { deep: true, immediate: true }
 )
 
 const formRef = ref()
@@ -71,7 +86,7 @@ onMounted(() => {
 /**
  * 根据表单字段类型返回对应的组件名称
  */
-const getComponentType = (type:string) => {
+const getComponentType = (type: string) => {
   switch (type) {
     case 'input':
       return ElInput
@@ -96,41 +111,41 @@ const getComponentType = (type:string) => {
 /**
  * 根据表单字段配置返回对应的组件属性
  */
-const getComponentProps = (field) => {
+const getComponentProps = (field: Record<string, any>) => {
   switch (field.type) {
-    case 'select':
-    case 'checkbox-group':
-    case 'radio-group':
-      return { options: field.options, multiple: field.multiple }
-    case 'input':
-    case 'date-picker':
-    case 'time-picker':
-      return {
-        placeholder: field.placeholder,
-        format: field.format,
-        valueFormat: field.valueFormat,
-        defaultValue: field.defaultValue
-      }
-    case 'switch':
-      return {
-        activeText: '开启',
-        inactiveText: '关闭'
-      }
-    default:
-      return {}
+    // case 'select':
+    // case 'checkbox-group':
+    // case 'radio-group':
+    //   return { options: field.options, multiple: field.multiple }
+    // case 'input':
+    // case 'date-picker':
+    // case 'time-picker':
+    //   return {
+    //     placeholder: field.placeholder,
+    //     format: field.format,
+    //     valueFormat: field.valueFormat,
+    //     defaultValue: field.defaultValue
+    //   }
+    // case 'switch':
+    //   return {
+    //     activeText: '开启',
+    //     inactiveText: '关闭'
+    //   }
+    // default:
+    //   return {}
   }
 }
 
-const getDisplayLabel = (field) => {
+const getPlaceholder = (field: Record<string, any>) => {
   switch (field.type) {
     case 'input':
-      return `$请输入{field.label}`
+      return `请输入${field.label}`
     case 'select':
     case 'date-picker':
     case 'time-picker':
     case 'checkbox-group':
     case 'radio-group':
-      return `$请选择{field.label}`
+      return `请选择${field.label}`
     default:
       break
   }
@@ -145,8 +160,7 @@ const handleSubmit = async () => {
   }
 }
 
-const formManager = new SubmitController(props.modelValue)
 
-emit('create', formManager)
-defineExpose({ formManager })
+// emit('create', formManager)
+// defineExpose({ formManager })
 </script>

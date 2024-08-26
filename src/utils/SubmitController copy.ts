@@ -24,7 +24,6 @@ export class SubmitController {
     }
     private loadingService: any = null
     private showLoading: Boolean = true
-    private formConfig:Object = {}
 
 
 
@@ -39,6 +38,7 @@ export class SubmitController {
      */
     initialize(options: Record<any, any>) {
         this.options = merge(this.options, options)
+
     }
     public async run() {
         try {

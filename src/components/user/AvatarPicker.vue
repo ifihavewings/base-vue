@@ -13,7 +13,7 @@ const MAX = 20
 const avatarList = reactive<string []>([])
 for (let i = 1; i <= MAX; i++) {
     if(i < 20 ) {
-        avatarList.push(`http://1.15.26.177/avatar/${i}.png`)
+        avatarList.push(`http://localhost:5173/avatar/${i}.png`)
     }
 }
 

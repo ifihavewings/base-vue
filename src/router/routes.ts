@@ -1,6 +1,8 @@
 import documentation from "./documentation"
+import implementations from "./implementations"
 export default [
     ...documentation,
+    ...implementations,
     {
         path: '/axios-test',
         name: 'axiosTest',

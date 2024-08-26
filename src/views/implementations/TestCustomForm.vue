@@ -1,40 +1,24 @@
 <template>
-  <div>
-    <el-form>
-      <el-form-item label="用户名" prop="username">
-        <el-input v-model="ruleForm.username" />
-      </el-form-item>
-      <!-- <el-form-item label="手机号码" prop="phone">
-      <AvatarPicker />
-    </el-form-item> -->
-      <el-form-item label="电子邮箱" prop="email">
-        <el-input v-model="ruleForm.email" />
-      </el-form-item>
-      <el-form-item label="密码" prop="password">
-        <el-input type="password" v-model="ruleForm.password" />
-      </el-form-item>
-      <el-form-item label="确认密码" prop="passwordRepeat">
-        <el-input type="password" v-model="ruleForm.passwordRepeat" />
-      </el-form-item>
-    </el-form>
+  <div class="form-wrapper">
+    <CustomForm :formConfig="formConfig" ref="formRef"></CustomForm>
     <div class="button-wrapper">
-      <el-button :disabled="submitController.isSubmiting" @click="register" type="primary"
+      <el-button  type="primary"
         >注册</el-button
       >
-      <el-button @click="toggleAction" link>去登录</el-button>
+      <el-button link>去登录</el-button>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
-import type { FormInstance, formProps, FormRules } from 'element-plus'
+import type { FormInstance,  FormRules } from 'element-plus'
 import { register as registerApi } from '@/apis/user'
 // import { sameString } from '@/validaters/user'
 import * as validator from 'validator'
-import AvatarPicker from '@/components/user/AvatarPicker.vue'
 import { ElMessage } from 'element-plus'
 import { SubmitController } from '@/utils/SubmitController'
+import CustomForm from './components/CustomForm.vue'
 interface RuleForm {
   username: string
   password: string
@@ -118,38 +102,69 @@ const submit = async () => {
   }
   await registerApi(ruleForm)
 }
-const props = defineProps({
-  pId: {
-    type: String,
-    default: ''
+
+const formData = ref({
+  username: '',
+  password: '',
+  passwordRepeat: '',
+  email: '',
+  hobby: '',
+  birthDate: ''
+})
+const formItems = ref([
+  {
+    prop: 'username',
+    type: 'input',
+    label: '用户名'
+  },
+  {
+    prop: 'password',
+    type: 'input',
+    attrs: {
+      type: 'password'
+    },
+    label: '密码'
+  },
+  {
+    prop: 'passwordRepeat',
+    type: 'input',
+    attrs: {
+      type: 'password'
+    },
+    label: '密码'
+  },
+  {
+    prop: 'email',
+    type: 'input',
+    label: '密码'
+  },
+  {
+    prop: 'hobby',
+    type: 'checkbox-group',
+    label: '密码'
+  },
+  {
+    prop: 'birthDate',
+    type: 'date-picker',
+    label: '出生日期'
   }
+])
+const formConfig = ref({
+  formData,
+  formItems,
+  rules
 })
-const submitController = new SubmitController({
-  loadingOption: {
-    target: props.pId // 指定目标容器
-  },
-  formData: {},
-  formProps: {
-      ref:ruleFormRef,
-      model:"ruleForm",
-      rules:"rules",
-      'label-width':"120px",
-      class:"demo-ruleForm",
-      size:"formSize",
-      'status-icon':true,
-  },
-  validator: doCheckForm,
-  callback() {
-    alert(2)
-  },
-  submit
-})
-const register : async () => {
-  submitController.run()
-}
+
 </script>
 
 <style scoped lang="scss">
+.form-wrapper {
+  width: 60%;
+  height: auto;
+  padding: 20px;
+  border-radius: 4px;
+  margin: 0 auto;
+}
 .button-wrapper {
   display: flex;
   justify-content: flex-end;

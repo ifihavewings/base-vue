@@ -205,7 +205,7 @@ const formItems = ref([
     type: 'date-picker',
     label: '出生日期',
     attrs: {
-      type: 'date',
+      type: 'daterange',
       valueFormat: 'YYYY-MM-DD',
       format: 'YYYY-MM-DD'
     }

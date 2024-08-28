@@ -19,14 +19,31 @@
         v-bind="field.attrs"
         :placeholder="getPlaceholder(field)"
       >
-
-          <template v-if="field.type === 'radio'">
-            <el-radio v-for="i in 3" :key="i" value="i">{{i}}</el-radio>
-          </template>
-          <template v-if="field.type === 'checkbox'">
-            <el-checkbox v-for="i in 3" :key="i" value="i">{{i}}</el-checkbox>
-          </template>
-          
+        <!-- works when >=2.6.0, recommended ✔️ not work when <2.6.0 ❌ -->
+        <!-- <el-radio value="Value 1">Option 1</el-radio> -->
+        <!-- works when <2.6.0, deprecated act as value when >=3.0.0 -->
+        <!-- <el-radio label="Label 2 & Value 2">Option 2</el-radio> -->
+        <template v-if="field.type === 'radio'">
+          <el-radio
+            v-bind="item.attrs"
+            v-for="item in field.options"
+            :key="item.value"
+            :label="item.value"
+            >{{ item.label }}</el-radio
+          >
+        </template>
+        <!-- works when >=2.6.0, recommended ✔️ value not work when <2.6.0 ❌ -->
+        <!-- <el-checkbox label="Option 1" value="Value 1" /> -->
+        <!-- works when <2.6.0, deprecated act as value when >=3.0.0 -->
+        <!-- <el-checkbox label="Option 2 & Value 2" />        -->
+        <template v-if="field.type === 'checkbox'">
+          <el-checkbox
+            v-bind="item.attrs"
+            v-for="item in field.options"
+            :key="item.value"
+            :label="item.value"
+          >{{ item.label }}</el-checkbox>
+        </template>
       </component>
     </el-form-item>
 
@@ -77,6 +94,7 @@ watch(
 watch(
   () => innerFormConfig.value,
   () => {
+    console.log('innerFormConfig.value', innerFormConfig.value)
     emit('update:formConfig', innerFormConfig.value)
   },
   { deep: true, immediate: true }
@@ -112,7 +130,6 @@ const getComponentType = (type: string) => {
       return ElInput
   }
 }
-
 
 const getPlaceholder = (field: Record<string, any>) => {
   switch (field.type) {

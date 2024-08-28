@@ -101,8 +101,9 @@ const formData = ref({
   username: '',
   password: '',
   passwordRepeat: '',
+  gender: '',
   email: '',
-  hobby: '',
+  hobby: [],
   birthDate: ''
 })
 const formItems = ref([
@@ -150,12 +151,35 @@ const formItems = ref([
   {
     prop: 'hobby',
     type: 'checkbox',
-    label: '兴趣爱好'
+    label: '兴趣爱好',
+    options: [
+      {
+        label: '游泳',
+        value: 1,
+        // pass
+        // attrs: {
+        //   disabled: true
+        // }
+      },
+      {
+        label: '钓鱼',
+        value: 2,
+      },
+    ],
+    // pass
+    // attrs: {
+    //   disabled: true
+    // },
   },
   {
     prop: 'birthDate',
     type: 'date-picker',
-    label: '出生日期'
+    label: '出生日期',
+    attrs: {
+      type: 'date',
+      valueFormat: 'YYYY-MM-DD',
+      format: 'YYYY-MM-DD'
+    }
   }
 ])
 const formConfig = ref({

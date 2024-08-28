@@ -12,16 +12,21 @@
       :key="field.prop"
     >
       <component
+        id="formItem"
         style="width: 100%; height: 32px"
         :is="getComponentType(field.type)"
         v-model="innerFormConfig.formData[field.prop]"
         v-bind="field.attrs"
         :placeholder="getPlaceholder(field)"
       >
-        <template v-if="field.options && field.type === 'radio'">
-          <el-radio value="Value 1">Option 1</el-radio>
-          <el-radio value="Value 2">Option 3</el-radio>
-        </template>
+
+          <template v-if="field.type === 'radio'">
+            <el-radio v-for="i in 3" :key="i" value="i">{{i}}</el-radio>
+          </template>
+          <template v-if="field.type === 'checkbox'">
+            <el-checkbox v-for="i in 3" :key="i" value="i">{{i}}</el-checkbox>
+          </template>
+          
       </component>
     </el-form-item>
 
@@ -92,9 +97,9 @@ const getComponentType = (type: string) => {
       return ElInput
     case 'select':
       return ElSelect
-    case 'checkbox-group':
+    case 'checkbox':
       return ElCheckboxGroup
-    case 'radio-group':
+    case 'radio':
       return ElRadioGroup
     case 'date-picker':
       return ElDatePicker
@@ -108,33 +113,6 @@ const getComponentType = (type: string) => {
   }
 }
 
-/**
- * 根据表单字段配置返回对应的组件属性
- */
-const getComponentProps = (field: Record<string, any>) => {
-  switch (field.type) {
-    // case 'select':
-    // case 'checkbox-group':
-    // case 'radio-group':
-    //   return { options: field.options, multiple: field.multiple }
-    // case 'input':
-    // case 'date-picker':
-    // case 'time-picker':
-    //   return {
-    //     placeholder: field.placeholder,
-    //     format: field.format,
-    //     valueFormat: field.valueFormat,
-    //     defaultValue: field.defaultValue
-    //   }
-    // case 'switch':
-    //   return {
-    //     activeText: '开启',
-    //     inactiveText: '关闭'
-    //   }
-    // default:
-    //   return {}
-  }
-}
 
 const getPlaceholder = (field: Record<string, any>) => {
   switch (field.type) {
@@ -159,7 +137,6 @@ const handleSubmit = async () => {
     console.error('Submit error:', error)
   }
 }
-
 
 // emit('create', formManager)
 // defineExpose({ formManager })

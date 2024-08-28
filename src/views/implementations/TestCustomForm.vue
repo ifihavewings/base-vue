@@ -149,7 +149,7 @@ const formItems = ref([
   },
   {
     prop: 'hobby',
-    type: 'checkbox-group',
+    type: 'checkbox',
     label: '兴趣爱好'
   },
   {

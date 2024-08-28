@@ -24,25 +24,57 @@
         <!-- works when <2.6.0, deprecated act as value when >=3.0.0 -->
         <!-- <el-radio label="Label 2 & Value 2">Option 2</el-radio> -->
         <template v-if="field.type === 'radio'">
-          <el-radio
-            v-bind="item.attrs"
-            v-for="item in field.options"
-            :key="item.value"
-            :label="item.value"
-            >{{ item.label }}</el-radio
-          >
+          <template v-if="versionLessThan260">
+            <el-radio
+              v-for="item in field.options"
+              v-bind="item.attrs"
+              :key="item.value"
+              :label="item.value"
+              >{{ item.label }}</el-radio
+            >
+          </template>
+          <template v-else>
+            <el-radio
+              v-for="item in field.options"
+              v-bind="item.attrs"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </template>
         </template>
         <!-- works when >=2.6.0, recommended ✔️ value not work when <2.6.0 ❌ -->
         <!-- <el-checkbox label="Option 1" value="Value 1" /> -->
         <!-- works when <2.6.0, deprecated act as value when >=3.0.0 -->
         <!-- <el-checkbox label="Option 2 & Value 2" />        -->
         <template v-if="field.type === 'checkbox'">
-          <el-checkbox
-            v-bind="item.attrs"
+          <template v-if="versionLessThan260">
+            <el-checkbox
+              v-for="item in field.options"
+              v-bind="item.attrs"
+              :key="item.value"
+              :label="item.value"
+              >{{ item.label }}</el-checkbox
+            >
+          </template>
+          <template v-else>
+            <el-checkbox
+              v-for="item in field.options"
+              v-bind="item.attrs"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </template>
+        </template>
+        <template v-if="field.type === 'select'">
+          <el-option
             v-for="item in field.options"
+            v-bind="item.attrs"
             :key="item.value"
-            :label="item.value"
-          >{{ item.label }}</el-checkbox>
+            :label="item.label"
+            :value="item.value"
+          ></el-option>
         </template>
       </component>
     </el-form-item>
@@ -69,9 +101,10 @@ import {
   ElTimePicker,
   ElSwitch
 } from 'element-plus'
+import { version } from 'element-plus/package.json'
 import { SubmitController } from '@/utils/SubmitController'
 import { cloneDeep } from 'lodash'
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
 
 // 3.4 才有
 const props = defineProps({
@@ -154,6 +187,29 @@ const handleSubmit = async () => {
     console.error('Submit error:', error)
   }
 }
+
+const compareWith260 = (version: string) => {
+  const referenceVersion = '2.6.0'
+
+  const vParts = version.split('.').map(Number)
+  const refParts = referenceVersion.split('.').map(Number)
+
+  for (let i = 0; i < Math.max(vParts.length, refParts.length); i++) {
+    const v = vParts[i] || 0 // 如果某个版本号部分不存在，则默认为 0
+    const ref = refParts[i] || 0
+
+    if (v > ref) {
+      return 1 // version 大于 2.6.0
+    }
+    if (v < ref) {
+      return -1 // version 小于 2.6.0
+    }
+  }
+
+  return 0 // version 等于 2.6.0
+}
+
+const versionLessThan260 = computed(() => compareWith260(version) < 0)
 
 // emit('create', formManager)
 // defineExpose({ formManager })

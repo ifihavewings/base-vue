@@ -104,13 +104,17 @@ const formData = ref({
   gender: '',
   email: '',
   hobby: [],
-  birthDate: ''
+  birthDate: '',
+  taste: []
 })
 const formItems = ref([
   {
     prop: 'username',
     type: 'input',
-    label: '用户名'
+    label: '用户名',
+    attrs: {
+      clearable: true
+    },
   },
   {
     prop: 'password',
@@ -167,8 +171,33 @@ const formItems = ref([
       },
     ],
     // pass
+    attrs: {
+      // disabled: true,
+      // multiple: true,
+    },
+  },
+  {
+    prop: 'taste',
+    type: 'select',
+    label: '饮食偏好',
+    options: [
+      {
+        label: '豆腐脑',
+        value: 1,
+        // pass
+        // attrs: {
+        //   disabled: true
+        // }
+      },
+      {
+        label: '油条',
+        value: 2,
+      },
+    ],
+    // pass
     // attrs: {
-    //   disabled: true
+    //   disabled: true,
+    //   multiple: true,
     // },
   },
   {

@@ -10,9 +10,9 @@
       :label="field.label"
       :prop="field.prop"
       :key="field.prop"
+
     >
       <component
-        id="formItem"
         style="width: 100%; height: 32px"
         :is="getComponentType(field.type)"
         v-model="innerFormConfig.formData[field.prop]"
@@ -78,16 +78,13 @@
         </template>
       </component>
     </el-form-item>
-
+    <slot name="footer">
+      <el-form-item>
+        <el-button type="primary" @click="manager.run">提交</el-button>
+        <el-button @click="innerFormConfig.resetForm">重置</el-button>
+      </el-form-item>
+    </slot>
     <!-- 表单操作按钮 -->
-    <el-form-item v-if="innerFormConfig.footer">
-      <el-button type="primary" @click="handleSubmit">提交</el-button>
-      <el-button @click="innerFormConfig.resetForm">重置</el-button>
-    </el-form-item>
-    <el-form-item v-else>
-      <el-button type="primary" @click="handleSubmit">提交</el-button>
-      <el-button @click="innerFormConfig.resetForm">重置</el-button>
-    </el-form-item>
   </el-form>
 </template>
 
@@ -106,7 +103,6 @@ import { SubmitController } from '@/utils/SubmitController'
 import { cloneDeep } from 'lodash'
 import { ref, onMounted, watch, computed } from 'vue'
 
-// 3.4 才有
 const props = defineProps({
   formConfig: {
     type: Object,
@@ -114,7 +110,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['create', 'update:formConfig'])
+const emit = defineEmits(['managerCreated', 'update:formConfig'])
 
 const innerFormConfig = ref({})
 watch(
@@ -182,6 +178,7 @@ const getPlaceholder = (field: Record<string, any>) => {
 const handleSubmit = async () => {
   try {
     // const result = await props.formManager.submitForm(yourSubmitFunction, true)
+    manager.submit()
     console.log('Submit result:')
   } catch (error) {
     console.error('Submit error:', error)
@@ -210,7 +207,15 @@ const compareWith260 = (version: string) => {
 }
 
 const versionLessThan260 = computed(() => compareWith260(version) < 0)
+const manager = new SubmitController({
+  // A function passed as an argument should preferably not have any parameters.
+  //  The SubmitController is designed to work with the validator property, whether it's a function, an object, or an array of functions and/or objects.
+  // validator: { func: checkForm, args: [ruleFormRef.value] },
+  validator: () => formRef.value.validate(),
+  callback() {},
+  submit: innerFormConfig.value.actions.submit
+})
 
-// emit('create', formManager)
-// defineExpose({ formManager })
+emit('managerCreated', manager)
+defineExpose({ manager })
 </script>

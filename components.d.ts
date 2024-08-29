@@ -22,6 +22,7 @@ declare module 'vue' {
     ElOptions: typeof import('element-plus/es')['ElOptions']
     ElRadio: typeof import('element-plus/es')['ElRadio']
     ElSelect: typeof import('element-plus/es')['ElSelect']
+    ElUpload: typeof import('element-plus/es')['ElUpload']
     FadeTransition: typeof import('./src/components/transitions/FadeTransition.vue')['default']
     Layout: typeof import('./src/components/layout/index.vue')['default']
     Leading: typeof import('./src/components/Leading.vue')['default']

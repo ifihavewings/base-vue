@@ -1,6 +1,10 @@
 <template>
   <div class="form-wrapper">
-    <CustomForm :formConfig="formConfig" ref="formRef"></CustomForm>
+    <CustomForm :formConfig="formConfig" ref="formRef" @managerCreated="managerCreated">
+      <template #footer>
+        
+      </template>
+    </CustomForm>
   </div>
 </template>
 
@@ -8,7 +12,6 @@
 import { reactive, ref } from 'vue'
 import type { FormInstance,  FormRules } from 'element-plus'
 import { register as registerApi } from '@/apis/user'
-// import { sameString } from '@/validaters/user'
 import * as validator from 'validator'
 import { ElMessage } from 'element-plus'
 import { SubmitController } from '@/utils/SubmitController'
@@ -88,13 +91,13 @@ const checkForm = async (formEl: FormInstance | undefined) => {
 const doCheckForm = () => checkForm(ruleFormRef.value)
 
 const submit = async () => {
-  if (ruleForm.password !== ruleForm.passwordRepeat) {
+  if (formConfig.value.formData.password !== formConfig.value.formData.passwordRepeat) {
     return ElMessage({
       type: 'error',
       message: '两次密码不一致'
     })
   }
-  await registerApi(ruleForm)
+  await registerApi(formConfig.value.formData)
 }
 
 const formData = ref({
@@ -120,7 +123,8 @@ const formItems = ref([
     prop: 'password',
     type: 'input',
     attrs: {
-      type: 'password'
+      type: 'password',
+      clearable: true,
     },
     label: '密码'
   },
@@ -128,14 +132,18 @@ const formItems = ref([
     prop: 'passwordRepeat',
     type: 'input',
     attrs: {
-      type: 'password'
+      type: 'password',
+      clearable: true
     },
     label: '重复密码'
   },
   {
     prop: 'email',
     type: 'input',
-    label: '邮箱'
+    label: '邮箱',
+    attrs: {
+      clearable: true
+    }
   },
   {
     prop: 'gender',
@@ -150,7 +158,10 @@ const formItems = ref([
         label: 'm',
         value: 0
       },
-  ]
+  ],
+  attrs: {
+    clearable: true
+    }
   },
   {
     prop: 'hobby',
@@ -173,7 +184,8 @@ const formItems = ref([
     // pass
     attrs: {
       // disabled: true,
-      // multiple: true,
+      multiple: true,
+      clearable: true
     },
   },
   {
@@ -195,10 +207,10 @@ const formItems = ref([
       },
     ],
     // pass
-    // attrs: {
-    //   disabled: true,
-    //   multiple: true,
-    // },
+    attrs: {
+      multiple: true,
+      clearable: true,
+    },
   },
   {
     prop: 'birthDate',
@@ -214,9 +226,23 @@ const formItems = ref([
 const formConfig = ref({
   formData,
   formItems,
-  rules
+  rules,
+  actions: {
+    reset: () => {},
+    autoManage: true,
+    throttle: true,
+    loading: true,
+    submit,
+    callBack: () => {
+      alert(1)
+    }
+  }
 })
-
+// 接收自组建的 manager
+const manager = ref({})
+const managerCreated = (sc: SubmitController) => {
+  manager.value = sc
+}
 </script>
 
 <style scoped lang="scss">

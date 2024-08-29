@@ -12,8 +12,10 @@ import { merge } from 'lodash'
 export class SubmitController {
 
     public isSubmiting = ref(false)
+    // default options
     private options: Record<any, any> = {
         loadingOption: {
+            showLoading: true,
             loadingOption: {
                 target: document.body, // 指定目标容器
                 text: 'loading...', // 显示的文本
@@ -23,8 +25,6 @@ export class SubmitController {
         }
     }
     private loadingService: any = null
-    private showLoading: Boolean = true
-    private formConfig:Object = {}
 
 
 
@@ -40,12 +40,15 @@ export class SubmitController {
     initialize(options: Record<any, any>) {
         this.options = merge(this.options, options)
     }
-    public async run() {
+    // if this run funtion is called as an event handler or as a callback method, `this` would be undefined
+    // so we need to use arrow function or bind(this) to ensure the correct `this` context always refers to the instance
+    
+    public  run = async() =>{
         try {
             const isPassed = await this.validate()
             // ElementPlus 文档不明确， 有时候返回 true 有时候返回 undefined
             if (isPassed || undefined === isPassed) {
-                if (this.showLoading) {
+                if (this.options.showLoading) {
                     this.loadingService = ElLoading.service(this.options.loadingOption)
                 }
                 const res = await this.submit()

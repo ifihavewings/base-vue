@@ -9,6 +9,28 @@ document.addEventListener('websocketMessage', (event) => {
   console.log(event)
 })
 
+class Person  {
+  public name = 'sv'
+  public source;
+
+  private age = 19
+
+  protected gender = 'male'
+
+  public add(x:number,y:number) :number{
+    return x+y;
+  }
+}
+const p1 = new Person()
+console.log(p1.name)
+p1.gender = 'f'
+p1.age = 20
+console.log(p1.source)
+console.log(p1.age)
+console.log(p1.gender)
+console.log(p1.add(1,2))
+
+
 const {token} = useUser()
 
 </script>

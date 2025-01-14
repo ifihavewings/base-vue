@@ -1,8 +1,12 @@
 import documentation from "./documentation"
 import implementations from "./implementations"
+import automatics from "@/aotomatics/test/router"
+import printer from "@/chat-printer/router"
 export default [
     ...documentation,
     ...implementations,
+    ...automatics,
+    ...printer,
     {
         path: '/axios-test',
         name: 'axiosTest',

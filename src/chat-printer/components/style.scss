@@ -1,0 +1,136 @@
+/* 这里定义了 markdown 的样式 */
+.markdown-body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    background-color: #ffffff; /* 背景为白色 */
+    color: #333; /* 默认文本颜色为深灰色 */
+    padding: 20px;
+    margin: 0  10px;
+    flex:1;
+}
+/* 标题样式 */
+.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    color: #3e8ef7; /* 标题颜色：Element Plus 蓝色 */
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+/* 段落 */
+.markdown-body p {
+    margin-bottom: 15px;
+}
+
+/* 强调文本 */
+.markdown-body strong {
+    font-weight: bold;
+    color: #3e8ef7; /* 蓝色强调 */
+}
+
+.markdown-body em {
+    font-style: italic;
+    color: #888; /* 斜体文字为灰色 */
+}
+
+/* 行内代码 */
+.markdown-body code {
+    background-color: #f5f5f5;
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    color: #e64a19; /* 行内代码字体颜色 */
+}
+
+/* 代码块 */
+.markdown-body pre {
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    padding: 20px;
+    font-family: 'Courier New', monospace;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    color: #333;
+    overflow: auto;
+}
+
+/* 代码块高亮 */
+.markdown-body pre code {
+    background: none;
+    color: #e64a19; /* 代码块高亮 */
+}
+
+/* 链接 */
+.markdown-body a {
+    color: #3e8ef7; /* 链接颜色：Element Plus 蓝色 */
+    text-decoration: none;
+}
+
+.markdown-body a:hover {
+    text-decoration: underline;
+}
+
+/* 列表样式 */
+.markdown-body ul, .markdown-body ol {
+    padding-left: 20px;
+    margin-bottom: 15px;
+}
+
+.markdown-body li {
+    margin-bottom: 10px;
+}
+
+/* 引用块 */
+.markdown-body blockquote {
+    border-left: 4px solid #3e8ef7;
+    padding-left: 15px;
+    font-style: italic;
+    color: #888;
+    margin: 20px 0;
+}
+
+/* 表格 */
+.markdown-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+}
+
+.markdown-body th, .markdown-body td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.markdown-body th {
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+.markdown-body td {
+    background-color: #fafafa;
+}
+
+/* 图片 */
+.markdown-body img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+/* 水平线 */
+.markdown-body hr {
+    border: 0;
+    border-top: 2px solid #ddd;
+    margin: 20px 0;
+}
+
+/* 任务列表 */
+.markdown-body input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+/* 表情符号 */
+.markdown-body .emoji {
+    font-size: 20px;
+    display: inline-block;
+    margin: 0 2px;
+}
